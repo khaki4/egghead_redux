@@ -9,34 +9,27 @@ const counter = (state = 0, action) => {
     }
 };
 
-expect(
-    counter(0, { type: 'INCREMENT' })
-).toEqual(1);
+const { createStore } = Redux;
+const store = createStore(counter);
 
-expect(
-    counter(1, { type: 'INCREMENT' })
-).toEqual(2);
+// store has 3 important methods.
 
-expect(
-    counter(1, { type: 'INCREMENT' })
-).toEqual(2);
+// 1> store.getState()
+console.log(store.getState());
 
+// 2> store.dispatch()
+store.dispatch({ type: 'INCREMENT' });
+console.log(store.getState());
 
-expect(
-    counter(2, { type: 'DECREMENT' })
-).toEqual(1);
+// 3> store.subscribe()
+const render = () => {
+    document.body.innerText = store.getState();
+};
+store.subscribe(render);
+// this is for init
 
+window.onload = () => render();
 
-expect(
-    counter(1, { type: 'SOMETHEING_ELSE' })
-).toEqual(1);
-
-expect(
-    counter(undefined, { type: 'SOMETHEING_ELSE' })
-).toEqual(0);
-
-expect(
-    counter(undefined, { })
-).toEqual(0);
-
-console.log('Test passed!');
+document.addEventListener('click', () => {
+    store.dispatch({ type: 'INCREMENT' });
+});
