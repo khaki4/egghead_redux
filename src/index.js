@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { createStore, combineReducers } from 'redux'
+import React, {Component} from 'react';
+import {createStore} from 'redux'
 import ReactDOM from 'react-dom';
-import expect, { createSpy, spyOn, isSpy } from 'expect'
+import expect, {createSpy, spyOn, isSpy} from 'expect'
 import deepFreeze from 'deep-freeze';
 
-// https://egghead.io/lessons/javascript-redux-reducer-composition-with-combinereducers#/tab-transcript
+// https://egghead.io/lessons/javascript-redux-implementing-combinereducers-from-scratch
 
 const todo = (state, action) => {
     switch (action.type) {
@@ -41,10 +41,8 @@ const todos = (state = [], action) => {
     }
 };
 
-const visibilityFilter = (
-    state = 'SHOW_ALL',
-    action
-) => {
+const visibilityFilter = (state = 'SHOW_ALL',
+                          action) => {
     switch (action.type) {
         case 'SET_VISIBILITY_FILETER':
             return action.filter;
@@ -52,11 +50,6 @@ const visibilityFilter = (
             return state;
     }
 };
-
-const todoApp = combineReducers({
-    todos,
-    visibilityFilter
-});
 
 // const todoApp = (state = {}, action) => {
 //     return {
@@ -70,6 +63,27 @@ const todoApp = combineReducers({
 //         )
 //     };
 // };
+
+const combineReducers = (reducers) => {
+    return (state = {}, action) => {
+        return Object.keys(reducers)
+            .reduce((nextState, key) => {
+                    nextState[key] = reducers[key](
+                        state[key],
+                        action
+                    );
+
+                    return nextState;
+                },
+                {}
+            );
+    };
+};
+
+const todoApp = combineReducers({
+    todos,
+    visibilityFilter
+});
 
 const store = createStore(todoApp);
 
