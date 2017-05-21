@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import expect, {createSpy, spyOn, isSpy} from 'expect'
 import deepFreeze from 'deep-freeze';
 
-// https://egghead.io/lessons/javascript-redux-implementing-combinereducers-from-scratch
+// https://egghead.io/lessons/javascript-redux-react-todo-list-example-toggling-a-todo#/tab-transcript
 
 const todo = (state, action) => {
     switch (action.type) {
@@ -51,19 +51,6 @@ const visibilityFilter = (state = 'SHOW_ALL',
     }
 };
 
-// const todoApp = (state = {}, action) => {
-//     return {
-//         todos: todos(
-//             state.todos,
-//             action
-//         ),
-//         visibilityFilter: visibilityFilter(
-//             state.visibilityFilter,
-//             action
-//         )
-//     };
-// };
-
 const combineReducers = (reducers) => {
     return (state = {}, action) => {
         return Object.keys(reducers)
@@ -87,45 +74,60 @@ const todoApp = combineReducers({
 
 const store = createStore(todoApp);
 
-console.log('Initial state:');
-console.log(store.getState());
-console.log('--------------');
+let nextTodoId = 0;
+class TodoApp extends Component {
+    render() {
+        return (
+            <div>
+                <input ref={(node) => {
+                    this.input = node;
+                }}/>
+                <button
+                    onClick={() => {
+                        store.dispatch({
+                            type: 'ADD_TODO',
+                            text: this.input.value,
+                            id: nextTodoId++
+                        })
+                        this.input.value = '';
+                    }}
+                >
+                    Add Todo
+                </button>
+                <ul>
+                    {this.props.todos.map((todo) => (
+                            <li key={todo.Id}
+                                onClick={() => {
+                                    store.dispatch({
+                                        type: 'TOGGLE_TODO',
+                                        id: todo.id
+                                    });
+                                }}
+                                style={{
+                                    textDecoration: todo.completed ?
+                                        'line-through' :
+                                        'none'
+                                }}
+                            >
+                                {todo.text}
+                            </li>
+                        )
+                    )}
+                </ul>
+            </div>
+        );
+    }
+}
 
-console.log('Dispatching ADD_TODO.');
-store.dispatch({
-    type: 'ADD_TODO',
-    id: 0,
-    text: 'Learn Redux'
-});
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
 
-console.log('Dispatching ADD_TODO.');
-store.dispatch({
-    type: 'ADD_TODO',
-    id: 1,
-    text: 'Go shopping'
-});
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
+const render = () => {
+    ReactDOM.render(
+        <TodoApp
+            todos={store.getState().todos}
+        />,
+        document.getElementById('root')
+    )
+};
 
-console.log('Dispatching TOGGLE_TODO.');
-store.dispatch({
-    type: 'TOGGLE_TODO',
-    id: 0
-});
-
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
-
-console.log('Dispatching SET_VISIBILITY_FILTER');
-store.dispatch({
-    type: 'SET_VISIBILITY_FILTER',
-    filter: 'SHOW_COMPLETED'
-});
-console.log('Current state:');
-console.log(store.getState());
-console.log('--------------');
+store.subscribe(render);
+render();
