@@ -2,7 +2,7 @@ import expect from 'expect';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import deepFreeze from 'deep-freeze';
-import { createStore, combineReducers} from 'redux';
+import { createStore } from 'redux';
 
 const todo = (state, action) => {
     switch (action.type) {
@@ -45,24 +45,21 @@ const visibilityFilter = (state = 'SHOW_ALL', action) => {
     }
 };
 
+const combineReducers = reducers => {
+    return (state = {}, action) => {
+        return Object.keys(reducers).reduce((nextState, key) => {
+            return {
+                [key]: reducers[key](state[key], action)
+            };
+        }, {});
+    };
+};
 const todoApp = combineReducers({
-    todos, visibilityFilter
+    todos,
+    visibilityFilter
 });
 
 const store = createStore(todoApp);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 console.log('Initial state:');
 console.log(store.getState());
@@ -70,9 +67,9 @@ console.log('--------------');
 
 console.log('Dispatching ADD_TODO.');
 store.dispatch({
-  type: 'ADD_TODO',
-  id: 0,
-  text: 'Learn Redux'
+    type: 'ADD_TODO',
+    id: 0,
+    text: 'Learn Redux'
 });
 console.log('Current state:');
 console.log(store.getState());
@@ -80,9 +77,9 @@ console.log('--------------');
 
 console.log('Dispatching ADD_TODO.');
 store.dispatch({
-  type: 'ADD_TODO',
-  id: 1,
-  text: 'Go shopping'
+    type: 'ADD_TODO',
+    id: 1,
+    text: 'Go shopping'
 });
 console.log('Current state:');
 console.log(store.getState());
@@ -90,8 +87,8 @@ console.log('--------------');
 
 console.log('Dispatching TOGGLE_TODO.');
 store.dispatch({
-  type: 'TOGGLE_TODO',
-  id: 0
+    type: 'TOGGLE_TODO',
+    id: 0
 });
 console.log('Current state:');
 console.log(store.getState());
@@ -99,11 +96,9 @@ console.log('--------------');
 
 console.log('Dispatching SET_VISIBILITY_FILTER');
 store.dispatch({
-  type: 'SET_VISIBILITY_FILTER',
-  filter: 'SHOW_COMPLETED'
+    type: 'SET_VISIBILITY_FILTER',
+    filter: 'SHOW_COMPLETED'
 });
 console.log('Current state:');
 console.log(store.getState());
 console.log('--------------');
-
-
