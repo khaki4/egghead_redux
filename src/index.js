@@ -22,7 +22,7 @@ const createStore = (reducer) => {
 
     const dispatch = (action) => {
         state = reducer(state, action);
-        // listeners.forEach(listener => listener());
+        listeners.forEach(listener => listener());
     };
 
     const subscribe = (listener) => {
