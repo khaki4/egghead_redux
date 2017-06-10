@@ -1,0 +1,56 @@
+{
+  "extends":"rallycoding",
+  "env":{
+    "browser":true,
+    "node":true
+  },
+  "parserOptions":{
+    "ecmaVersion":6
+  },
+  "rules":{
+    "indent":[
+      "error",
+      4
+    ],
+    "requireSemicolons": "off",
+    "global-require": "off",
+    "arrow-body-style": "off",
+    "vars-on-top":"off",
+    "prefer-arrow-callback":"warn",
+    "strict":"warn",
+    "no-var":"warn",
+    "no-console":"off",
+    "prefer-template":"off",
+    "spaced-comment":"off",
+    "max-len":"off",
+    "arrow-parens":"warn",
+    "quotes":"off",
+    "no-param-reassign":"off",
+    "no-undef":"warn",
+    "consistent-return":"off",
+    "no-unused-vars":"warn",
+    "no-use-before-define":"warn",
+    "comma-dangle":"off",
+    "camelcase":"off",
+    "no-mixed-operators":"warn",
+    "object-shorthand":"warn",
+    "no-multiple-empty-lines":"warn",
+    "no-underscore-dangle":"off",
+    "func-names":"off",
+    "prefer-const":"off",
+    "padded-blocks":"off",
+    "eqeqeq":"warn",
+    "no-trailing-spaces":"off",
+    "no-shadow":"off",
+    "object-curly-spacing":"off",
+    "array-callback-return":"off",
+    "quote-props":"off",
+    "eol-last":"off"
+  },
+  "globals":{
+    "naviview":true,
+    "M_SEQ":true,
+    "isFirstStart":true,
+    "var2":false
+  }
+}
