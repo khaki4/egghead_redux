@@ -51,7 +51,10 @@ const todoApp = combineReducers({
 });
 const store = createStore(todoApp);
 
-const FilterLink = ({ filter, children }) => {
+const FilterLink = ({ filter, currentFilter, children }) => {
+  if (filter === currentFilter) {
+    return <span>{children}</span>;
+  }
   return (
     <a
       href="#"
@@ -126,15 +129,15 @@ class TodoApp extends Component {
         </ul>
         Show:
         {' '}
-        <FilterLink filter="SHOW_ALL">
+        <FilterLink filter="SHOW_ALL" currentFilter={visibilityFilter}>
           All
         </FilterLink>
         {' '}
-        <FilterLink filter="SHOW_ACTIVE">
+        <FilterLink filter="SHOW_ACTIVE" currentFilter={visibilityFilter}>
           Active
         </FilterLink>
         {' '}
-        <FilterLink filter="SHOW_COMPLETED">
+        <FilterLink filter="SHOW_COMPLETED" currentFilter={visibilityFilter}>
           Completed
         </FilterLink>
       </div>
