@@ -85,10 +85,7 @@ const mapDispatchToLinkProps = (dispatch, ownProps) => {
     }
   };
 };
-const FilterLink = connect(
-  mapStateToLinkProps,
-  mapDispatchToLinkProps
-)(Link);
+const FilterLink = connect(mapStateToLinkProps, mapDispatchToLinkProps)(Link);
 
 const Footer = () => (
   <p>
@@ -128,9 +125,44 @@ const TodoList = ({ todos, onTodoClick }) => (
 );
 
 let nextTodoId = 0;
+// let AddTodo = ({ onAddTodoClick }) => {
+//   let input;
+//   return (
+//     <div>
+//       <input
+//         ref={(node) => {
+//           input = node;
+//         }}
+//       />
+//       <button
+//         onClick={() => {
+//           console.log(input.value);
+//           onAddTodoClick(input.value);
+//           input.value = '';
+//         }}
+//       >
+//         Add Todo
+//       </button>
+//     </div>
+//   );
+// };
+// AddTodo = connect(null, (dispatch) => {
+//   return {
+//     onAddTodoClick: (text) => {
+//       dispatch({
+//         type: 'ADD_TODO',
+//         id: nextTodoId++,
+//         text
+//       });
+//     }
+//   };
+// })(AddTodo);
+
+/**
+ * https://egghead.io/lessons/javascript-redux-generating-containers-with-connect-from-react-redux-addtodo#/tab-discuss
+ */
 let AddTodo = ({ dispatch }) => {
   let input;
-
   return (
     <div>
       <input
